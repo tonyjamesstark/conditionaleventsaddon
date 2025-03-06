@@ -1,0 +1,7 @@
+name: ConditionalEventsAddon
+version: 0.1.0
+main: io.ce_addon.ConditionalEventsAddonPlugin
+description: Additional actions for ConditionalEvents
+author: TonyJamesStark
+api-version: '1.20'
+depend: [ConditionalEvents, CoreProtect]

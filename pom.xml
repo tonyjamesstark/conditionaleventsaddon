@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.conditionaleventsaddon</groupId>
+    <artifactId>conditionaleventsaddon</artifactId>
+    <version>0.1.0</version>
+
+	<properties>
+	    <maven.compiler.release>17</maven.compiler.release>
+	</properties>
+    <repositories>
+		<repository>
+   		 	<id>papermc</id>
+   		 	<url>https://repo.papermc.io/repository/maven-public/</url>
+		</repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>playpro-repo</id>
+            <url>https://maven.playpro.com</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+		    <groupId>io.papermc.paper</groupId>
+		    <artifactId>paper-api</artifactId>
+		    <!-- <version>1.20.1-R0.1-SNAPSHOT</version> -->
+            <version>1.21.4-R0.1-SNAPSHOT</version>
+		    <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ajneb97</groupId>
+            <artifactId>ConditionalEvents</artifactId>
+            <version>4.47.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.coreprotect</groupId>
+            <artifactId>coreprotect</artifactId>
+            <version>22.4</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>
+
