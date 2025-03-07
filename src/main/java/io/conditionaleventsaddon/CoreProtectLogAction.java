@@ -1,10 +1,14 @@
 package io.conditionaleventsaddon;
 
+import java.util.logging.Logger;
+import java.lang.Boolean;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.World;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.BlockState;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -15,35 +19,57 @@ import net.coreprotect.CoreProtectAPI;
 
 public class CoreProtectLogAction extends ConditionalEventsAction {
 
-    CoreProtectAPI cp = null;
+    Logger log = null;
+    CoreProtectAPI api = null;
 
-    public CoreProtectLogAction() {
+    public CoreProtectLogAction(Logger _log) {
         super("log_removal");
-        this.cp = this.getCoreProtect();
+        this.log = _log;
+        this.api = this.getCoreProtect();
     }
 
     @Override
     public void execute(Player player, String actionLine) {
-        // Format: log_removal: <player>;<x>;<y>;<z>;<material>;<block_data>
+        // this.log.info("executing coreprotectlogaction");
+        // Format: log_removal: <x>;<y>;<z>
         String[] sep = actionLine.split(";");
+        // this.log.info(sep.toString());
 
-        if (sep.length < 6){
-            System.out.println(
-                String.format("CoreProtectLogAction: Insufficient parameters passed: %s", actionLine));
+        if (sep.length < 3){
+            this.log.severe(
+                String.format("CoreProtectLogAction: Insufficient parameters in config: %s", actionLine));
             return;
         }
 
-        String user = sep[0];
-        double x = Double.parseDouble(sep[1]);
-        double y = Double.parseDouble(sep[2]);
-        double z = Double.parseDouble(sep[3]);
-        Material mat = Material.getMaterial(sep[4]);
-        BlockData data = mat.createBlockData(sep[5]);
+        String user = player.getName(); //sep[0];
+        double x = Double.parseDouble(sep[0]);
+        double y = Double.parseDouble(sep[1]);
+        double z = Double.parseDouble(sep[2]);
+        World world = player.getWorld();
+        // Material mat = Material.getMaterial(sep[5]);
+        // BlockData data = mat.createBlockData(sep[6]);
 
-        World world = Bukkit.getWorld(sep[0]);
         Location loc = new Location(world, x, y, z);
+        // this.log.info(loc.toString());
 
-        this.cp.logRemoval(user, loc, mat, data);
+        // BlockState state = world.getBlockState(new Location(world, x, y, z));
+        BlockState state = world.getBlockState(loc);
+        // this.log.info(state.toString());
+
+        if (this.api == null){
+            this.log.severe("No access to CoreProtectAPI");
+            return;
+        }
+        // this.log.info("Testing API...");
+        // this.api.testAPI();
+
+        // boolean success = this.cp.logRemoval(user, loc, mat, data);
+        boolean success = this.api.logRemoval(user, state);
+        // this.log.info(Boolean.toString(success));
+
+        if (!success){
+            this.log.severe("Logging unsuccessful");
+        }
     }
 
     // from https://docs.coreprotect.net/api/version/v10/
@@ -56,16 +82,16 @@ public class CoreProtectLogAction extends ConditionalEventsAction {
         }
 
         // Check that the API is enabled
-        CoreProtectAPI _cp = ((CoreProtect) plugin).getAPI();
-        if (_cp.isEnabled() == false) {
+        CoreProtectAPI _api = ((CoreProtect) plugin).getAPI();
+        if (_api.isEnabled() == false) {
             return null;
         }
 
         // Check that a compatible version of the API is loaded
-        if (_cp.APIVersion() < 10) {
+        if (_api.APIVersion() < 10) {
             return null;
         }
 
-        return _cp;
+        return _api;
     }
 }

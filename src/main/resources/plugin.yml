@@ -4,4 +4,10 @@ main: io.conditionaleventsaddon.ConditionalEventsAddonPlugin
 description: Additional actions for ConditionalEvents
 author: TonyJamesStark
 api-version: '1.20'
-depend: [ConditionalEvents, CoreProtect]
+depend:
+  - ConditionalEvents
+  - CoreProtect
+softdepend:
+  - WorldGuard
+  - WorldEdit
+  - FastAsyncWorldEdit
